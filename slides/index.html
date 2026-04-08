@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Data Yanolja 2026 - Bayesian Optimization Talk</title>
+    <meta
+      name="description"
+      content="A/B 테스트만으로는 부족합니다: CRM 정책 최적화로 이해하는 베이지안 최적화"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="deck-chrome">
+        <div class="deck-chrome__brand">
+          <span class="eyebrow">Data Yanolja 2026</span>
+          <span id="current-title" class="deck-chrome__title">Title</span>
+        </div>
+        <div class="deck-chrome__meta">
+          <span class="hint">← → / Space</span>
+          <span id="slide-counter" class="counter">1 / 14</span>
+        </div>
+      </header>
+
+      <div class="progress">
+        <div id="progress-fill" class="progress__fill"></div>
+      </div>
+
+      <div class="deck-stage">
+        <main class="deck" aria-live="polite">
+          <section class="slide slide--hero is-active" data-title="Title">
+            <div class="slide__inner hero">
+              <div class="hero__backdrop"></div>
+              <div class="hero__content">
+                <p class="eyebrow reveal" style="--d: 0.04s">Data Yanolja 2026</p>
+                <h1 class="headline headline--xl reveal" style="--d: 0.12s">
+                  A/B 테스트만으로는<br />
+                  부족합니다
+                </h1>
+                <p class="subheadline reveal" style="--d: 0.2s">
+                  CRM 정책 최적화로 이해하는 베이지안 최적화
+                </p>
+                <p class="speaker reveal" style="--d: 0.28s">이병헌</p>
+              </div>
+              <div class="hero__rail reveal" style="--d: 0.36s">
+                <span>A/B Test</span>
+                <span></span>
+                <span>Policy Search</span>
+                <span></span>
+                <span>Bayesian Optimization</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--split" data-title="A/B 테스트는 강력합니다">
+            <div class="slide__inner split">
+              <div class="split__left">
+                <p class="eyebrow reveal" style="--d: 0.05s">Problem Setup</p>
+                <h2 class="headline reveal" style="--d: 0.12s">A/B 테스트는 강력합니다</h2>
+                <ul class="bullet-list reveal" style="--d: 0.2s">
+                  <li>좋은 비교 도구입니다</li>
+                  <li>하지만 정책 공간을 직접 최적화해주지는 않습니다</li>
+                  <li>파라미터가 2개만 되어도 탐색 비용은 급격히 커집니다</li>
+                </ul>
+              </div>
+              <div class="split__right reveal" style="--d: 0.28s">
+                <div class="compare-card">
+                  <div class="compare-card__mini">
+                    <span>A</span>
+                    <span>B</span>
+                  </div>
+                  <p>Binary comparison</p>
+                </div>
+                <div class="policy-grid">
+                  <div class="policy-grid__label">
+                    <span>할인율</span>
+                    <span>발송 시점</span>
+                  </div>
+                  <div class="policy-grid__cells">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--formula" data-title="우리가 실제로 푸는 문제">
+            <div class="slide__inner formula-layout">
+              <div class="formula-card reveal" style="--d: 0.08s">
+                <p class="eyebrow">Optimization View</p>
+                <code>x* = argmax_x f(x)</code>
+              </div>
+              <div class="formula-copy reveal" style="--d: 0.18s">
+                <h2 class="headline">우리가 실제로 푸는 문제</h2>
+                <ul class="bullet-list">
+                  <li><strong>x</strong> = 정책 파라미터 조합</li>
+                  <li><strong>f(x)</strong> = 기대 성과</li>
+                  <li>문제는 <strong>f(x)</strong>를 모른다는 점입니다</li>
+                </ul>
+              </div>
+              <div class="contour-panel contour-panel--soft reveal" style="--d: 0.3s">
+                <span class="contour-panel__tag">unknown objective surface</span>
+                <span class="contour-panel__point contour-panel__point--one"></span>
+                <span class="contour-panel__point contour-panel__point--two"></span>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--formula" data-title="함수도 확률적으로 볼 수 있습니다">
+            <div class="slide__inner formula-layout formula-layout--wide">
+              <div class="formula-card reveal" style="--d: 0.08s">
+                <p class="eyebrow">Gaussian Process</p>
+                <code>f ~ GP(m, k)</code>
+              </div>
+              <div class="formula-copy reveal" style="--d: 0.18s">
+                <h2 class="headline">함수도 확률적으로 볼 수 있습니다</h2>
+                <ul class="bullet-list">
+                  <li>함수에 대한 분포</li>
+                  <li>mean + uncertainty</li>
+                </ul>
+              </div>
+              <div class="mini-plots reveal" style="--d: 0.28s">
+                <div class="mini-plot">
+                  <span class="mini-plot__label">prior</span>
+                  <svg viewBox="0 0 300 160" aria-hidden="true">
+                    <path d="M0 110 C40 90 70 30 120 60 S220 145 300 48" />
+                    <path d="M0 92 C50 60 110 120 150 104 S230 40 300 86" />
+                  </svg>
+                </div>
+                <div class="mini-plot mini-plot--band">
+                  <span class="mini-plot__label">posterior</span>
+                  <svg viewBox="0 0 300 160" aria-hidden="true">
+                    <path class="band" d="M0 108 C40 88 85 58 140 68 S220 118 300 92 L300 126 C230 136 170 118 120 104 S48 122 0 128 Z" />
+                    <path class="mean" d="M0 118 C50 98 90 72 145 84 S226 112 300 104" />
+                    <circle cx="74" cy="97" r="5" />
+                    <circle cx="168" cy="90" r="5" />
+                    <circle cx="236" cy="108" r="5" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--split" data-title="현실의 실험 결과는 noisy합니다">
+            <div class="slide__inner split split--balanced">
+              <div class="split__left reveal" style="--d: 0.08s">
+                <div class="formula-card">
+                  <p class="eyebrow">Observation Model</p>
+                  <code>y = f(x) + ε</code>
+                </div>
+                <div class="noise-plot">
+                  <svg viewBox="0 0 360 220" aria-hidden="true">
+                    <path class="axis" d="M32 18 V190 H334" />
+                    <circle cx="70" cy="138" r="6" />
+                    <circle cx="102" cy="120" r="6" />
+                    <circle cx="102" cy="146" r="6" />
+                    <circle cx="160" cy="90" r="6" />
+                    <circle cx="160" cy="128" r="6" />
+                    <circle cx="224" cy="102" r="6" />
+                    <circle cx="224" cy="152" r="6" />
+                    <circle cx="286" cy="112" r="6" />
+                    <path class="trend" d="M42 160 C92 142 132 110 180 114 S264 132 318 116" />
+                  </svg>
+                </div>
+              </div>
+              <div class="split__right reveal" style="--d: 0.2s">
+                <p class="eyebrow">Noisy Reality</p>
+                <h2 class="headline">현실의 실험 결과는 noisy합니다</h2>
+                <ul class="bullet-list">
+                  <li>같은 정책도 결과는 흔들립니다</li>
+                  <li>그래서 uncertainty를 같이 봐야 합니다</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--formula" data-title="다음 점은 어떻게 고를까">
+            <div class="slide__inner formula-layout formula-layout--stack">
+              <div class="formula-card reveal" style="--d: 0.08s">
+                <p class="eyebrow">Acquisition Intuition</p>
+                <code>x_next = argmax_x [μ(x) + βσ(x)]</code>
+              </div>
+              <div class="stack-plots reveal" style="--d: 0.18s">
+                <div class="stack-plot">
+                  <span>mean</span>
+                  <div class="stack-plot__track stack-plot__track--blue"></div>
+                </div>
+                <div class="stack-plot">
+                  <span>uncertainty</span>
+                  <div class="stack-plot__track stack-plot__track--teal"></div>
+                </div>
+                <div class="stack-plot">
+                  <span>acquisition</span>
+                  <div class="stack-plot__track stack-plot__track--orange">
+                    <i></i>
+                  </div>
+                </div>
+              </div>
+              <ul class="bullet-list bullet-list--inline reveal" style="--d: 0.28s">
+                <li>잘 될 것 같은 곳</li>
+                <li>아직 잘 모르는 곳</li>
+                <li>이 둘의 균형이 핵심입니다</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="slide slide--split" data-title="오늘의 예제는 CRM 정책 최적화입니다">
+            <div class="slide__inner split">
+              <div class="split__left split__left--cards reveal" style="--d: 0.08s">
+                <h2 class="headline">오늘의 예제는 CRM 정책 최적화입니다</h2>
+                <div class="parameter-card-grid">
+                  <article class="parameter-card">
+                    <p class="parameter-card__label">Parameter 1</p>
+                    <h3>할인율</h3>
+                    <p>0% - 30%</p>
+                  </article>
+                  <article class="parameter-card">
+                    <p class="parameter-card__label">Parameter 2</p>
+                    <h3>발송 시점</h3>
+                    <p>이벤트 후 0 - 7일</p>
+                  </article>
+                </div>
+              </div>
+              <div class="split__right reveal" style="--d: 0.2s">
+                <div class="flow-card">
+                  <div class="flow-card__node">
+                    <span>incremental profit</span>
+                  </div>
+                  <div class="flow-card__operator">-</div>
+                  <div class="flow-card__node flow-card__node--soft">
+                    <span>coupon cost</span>
+                  </div>
+                  <div class="flow-card__operator">-</div>
+                  <div class="flow-card__node flow-card__node--soft">
+                    <span>send cost</span>
+                  </div>
+                </div>
+                <p class="caption">
+                  완전 합성 시뮬레이터로 구조를 설명하고, 실제 결과가 나오면 시각 요소만 교체합니다.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--heatmap" data-title="제약이 없으면 이렇게 찾을 수 있습니다">
+            <div class="slide__inner heatmap-layout">
+              <div class="heatmap-copy reveal" style="--d: 0.08s">
+                <p class="eyebrow">Unconstrained Search</p>
+                <h2 class="headline">제약이 없으면 이렇게 찾을 수 있습니다</h2>
+                <ul class="bullet-list">
+                  <li>적은 실험으로 유망한 구간을 좁혀갑니다</li>
+                  <li>random / dense grid보다 더 효율적입니다</li>
+                </ul>
+              </div>
+              <div class="heatmap-card reveal" style="--d: 0.2s">
+                <span class="heatmap-card__tag">objective surface</span>
+                <div class="heatmap-card__surface">
+                  <span class="heatmap-card__dot dot-1"></span>
+                  <span class="heatmap-card__dot dot-2"></span>
+                  <span class="heatmap-card__dot dot-3"></span>
+                  <span class="heatmap-card__dot dot-4"></span>
+                  <span class="heatmap-card__dot dot-5"></span>
+                  <span class="heatmap-card__dot dot-6"></span>
+                  <span class="heatmap-card__ring"></span>
+                  <svg viewBox="0 0 640 360" aria-hidden="true">
+                    <path d="M120 290 C180 240 260 210 328 164 S456 108 534 92" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--heatmap" data-title="하지만 실무에는 제약이 있습니다">
+            <div class="slide__inner heatmap-layout">
+              <div class="heatmap-copy reveal" style="--d: 0.08s">
+                <div class="formula-card formula-card--compact">
+                  <p class="eyebrow">Constrained View</p>
+                  <code>max_x f(x) subject to g(x) &lt;= 0</code>
+                </div>
+                <h2 class="headline">하지만 실무에는 제약이 있습니다</h2>
+                <ul class="bullet-list">
+                  <li><strong>g(x)</strong> = 7일 무접속 이탈률</li>
+                  <li>수익이 높아도 운영 불가능한 정책은 탈락합니다</li>
+                  <li>우리가 찾는 것은 feasible optimum입니다</li>
+                </ul>
+              </div>
+              <div class="heatmap-card heatmap-card--constraint reveal" style="--d: 0.2s">
+                <span class="heatmap-card__tag">feasible region</span>
+                <div class="heatmap-card__surface">
+                  <div class="mask"></div>
+                  <span class="heatmap-card__ring heatmap-card__ring--one"></span>
+                  <span class="heatmap-card__ring heatmap-card__ring--two"></span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--split" data-title="연령과 성별이 달라지면 답도 달라집니다">
+            <div class="slide__inner split split--compare">
+              <div class="split__top reveal" style="--d: 0.06s">
+                <div class="formula-card formula-card--compact">
+                  <p class="eyebrow">Group-aware BO</p>
+                  <code>x*(c) = argmax_x f(x, c)</code>
+                </div>
+                <h2 class="headline">연령과 성별이 달라지면 답도 달라집니다</h2>
+              </div>
+              <div class="compare-panels">
+                <article class="context-card reveal" style="--d: 0.16s">
+                  <header>
+                    <span class="context-chip">Group 1</span>
+                    <h3>20대 여성</h3>
+                  </header>
+                  <div class="contour-panel contour-panel--a">
+                    <span class="contour-panel__ring"></span>
+                  </div>
+                </article>
+                <article class="context-card reveal" style="--d: 0.24s">
+                  <header>
+                    <span class="context-chip context-chip--soft">Group 2</span>
+                    <h3>20대 남성</h3>
+                  </header>
+                  <div class="contour-panel contour-panel--b">
+                    <span class="contour-panel__ring"></span>
+                  </div>
+                </article>
+                <article class="context-card reveal" style="--d: 0.3s">
+                  <header>
+                    <span class="context-chip context-chip--warm">Group 3</span>
+                    <h3>30대 여성</h3>
+                  </header>
+                  <div class="contour-panel contour-panel--c">
+                    <span class="contour-panel__ring"></span>
+                  </div>
+                </article>
+                <article class="context-card reveal" style="--d: 0.36s">
+                  <header>
+                    <span class="context-chip context-chip--mint">Group 4</span>
+                    <h3>30대 남성</h3>
+                  </header>
+                  <div class="contour-panel contour-panel--d">
+                    <span class="contour-panel__ring"></span>
+                  </div>
+                </article>
+              </div>
+              <p class="caption reveal" style="--d: 0.3s">
+                각 연령/성별 그룹마다 최적 할인율과 최적 발송 시점이 달라질 수 있습니다.
+              </p>
+            </div>
+          </section>
+
+          <section class="slide slide--node" data-title="그룹을 완전히 따로 볼 필요는 없습니다">
+            <div class="slide__inner node-layout">
+              <div class="node-copy reveal" style="--d: 0.08s">
+                <div class="formula-card formula-card--compact">
+                  <p class="eyebrow">Shared Group Structure</p>
+                  <code>x*(c) = argmax_x f(x, c)</code>
+                </div>
+                <h2 class="headline">그룹을 완전히 따로 볼 필요는 없습니다</h2>
+                <ul class="bullet-list">
+                  <li>연령/성별 그룹 간 유사성은 활용할 수 있습니다</li>
+                  <li>데이터가 적어도 더 안정적으로 탐색할 수 있습니다</li>
+                  <li>핵심은 그룹별 최적화 + 정보 공유입니다</li>
+                </ul>
+              </div>
+              <div class="node-visual reveal" style="--d: 0.2s">
+                <svg viewBox="0 0 640 360" aria-hidden="true">
+                  <path d="M154 118 C224 122 254 142 320 180" />
+                  <path d="M154 248 C228 244 258 220 320 180" />
+                  <path d="M486 118 C420 124 384 144 320 180" />
+                  <path d="M486 248 C418 242 388 218 320 180" />
+                </svg>
+                <div class="task-node task-node--a">20대 여성</div>
+                <div class="task-node task-node--b">20대 남성</div>
+                <div class="task-node task-node--c">30대 여성</div>
+                <div class="task-node task-node--d">30대 남성</div>
+                <div class="task-hub">shared structure</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--cards" data-title="같은 프레임은 다른 정책 문제에도 연결됩니다">
+            <div class="slide__inner cards-layout">
+              <div class="cards-copy reveal" style="--d: 0.08s">
+                <p class="eyebrow">Extensions</p>
+                <h2 class="headline">같은 프레임은 다른 정책 문제에도 연결됩니다</h2>
+              </div>
+              <div class="cards-grid cards-grid--four reveal" style="--d: 0.18s">
+                <article class="topic-card">
+                  <h3>할인율 × 쿠폰 유효기간</h3>
+                </article>
+                <article class="topic-card">
+                  <h3>할인율 × 발송 비율</h3>
+                </article>
+                <article class="topic-card">
+                  <h3>할인율 × uplift threshold</h3>
+                </article>
+                <article class="topic-card topic-card--soft">
+                  <h3>핵심은 파라미터화와 제약 정의</h3>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--cards" data-title="구현은 생각보다 가깝습니다">
+            <div class="slide__inner cards-layout cards-layout--tooling">
+              <div class="cards-copy reveal" style="--d: 0.08s">
+                <p class="eyebrow">Tooling</p>
+                <h2 class="headline">구현은 생각보다 가깝습니다</h2>
+              </div>
+              <div class="cards-grid cards-grid--two reveal" style="--d: 0.18s">
+                <article class="tool-card">
+                  <span class="tool-card__label">Ax</span>
+                  <h3>빠른 시작</h3>
+                </article>
+                <article class="tool-card tool-card--alt">
+                  <span class="tool-card__label">BoTorch</span>
+                  <h3>유연한 확장</h3>
+                </article>
+              </div>
+              <div class="statement-strip reveal" style="--d: 0.26s">
+                진짜 어려운 건 코드보다 문제 정의입니다
+              </div>
+            </div>
+          </section>
+
+          <section class="slide slide--hero slide--hero-end" data-title="Takeaway">
+            <div class="slide__inner hero hero--end">
+              <div class="hero__content hero__content--end">
+                <p class="eyebrow reveal" style="--d: 0.04s">Takeaway</p>
+                <h2 class="headline headline--lg reveal" style="--d: 0.12s">
+                  베이지안 최적화는<br />
+                  하이퍼파라미터 튜닝만의<br />
+                  도구가 아닙니다
+                </h2>
+                <p class="subheadline reveal" style="--d: 0.22s">
+                  A/B 테스트 이후의 정책 탐색 문제를 다루는 방법으로 볼 수 있습니다
+                </p>
+                <p class="closing reveal" style="--d: 0.3s">
+                  핵심은 objective, constraint, group context를 구조화하는 능력입니다
+                </p>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <footer class="deck-controls">
+        <button id="prev-button" type="button" class="control-button">Prev</button>
+        <button id="next-button" type="button" class="control-button control-button--primary">Next</button>
+      </footer>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
