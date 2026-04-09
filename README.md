@@ -12,7 +12,8 @@
 
 ## Documents
 
-- [실제 HTML 슬라이드 deck](./slides/index.html)
+- [라이브 슬라이드 사이트](https://heon28.github.io/data-yanolja-2026/)
+- [슬라이드 소스 엔트리](./slides/index.html)
 - [CFP 제출 문안](./docs/cfp/data-yanolja-2026/cfp-submission.md)
 - [슬라이드 구성안](./docs/cfp/data-yanolja-2026/slide-outline.md)
 - [슬라이드 본문 초안](./docs/cfp/data-yanolja-2026/slides-content.md)
@@ -32,4 +33,5 @@
 
 - `docs/cfp/` 아래 문서는 공개 제출용 문서입니다.
 - `slides/` 아래에는 실제 발표 deck 구현이 있습니다.
+- `gh-pages` 브랜치는 GitHub Pages 배포용 브랜치이며, 루트의 정적 파일을 `https://heon28.github.io/data-yanolja-2026/`로 서비스합니다.
 - 내부 브레인스토밍, 설계 메모, 실행 계획은 `docs/superpowers/`에서 별도로 관리하며 Git 추적 대상에서 제외합니다.
