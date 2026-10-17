@@ -1,37 +1,24 @@
-# Data Yanolja 2026 Talk Proposal
+# 데이터야놀자 2026 발표 자료
 
-데이터야놀자 2026 발표 제안과 발표 준비를 위한 공개 문서 저장소입니다.
+**A/B 테스트만으로는 부족합니다 — CRM 실험으로 이해하는 베이지안 최적화**
 
-## 발표 제목
+발표자: 이병헌 (AB180)
 
-`A/B 테스트만으로는 부족합니다: CRM 정책 최적화로 이해하는 베이지안 최적화`
+## 최종 발표 영상
 
-## 한 줄 소개
+[데이터야놀자 공식 채널에서 발표 영상 보기](https://www.youtube.com/watch?v=8-nDivx4lS4)
 
-베이지안 최적화는 딥러닝 하이퍼파라미터를 찾을 때만 쓰는 도구가 아니라, 상황에 따라 달라지는 비싼 의사결정 실험을 적은 시행착오로 최적화하는 방법입니다.
+## 발표 자료
 
-## Documents
+- [HTML 슬라이드](presentation_html/index.html): 파일을 내려받아 브라우저에서 열면 됩니다.
+- [발표 대본](presentation_html/script.md)
+- [슬라이드별 상세 설명](presentation_html/speaker_script.md)
+- [발표 제안과 준비 문서](docs/cfp/data-yanolja-2026/README.md)
 
-- [라이브 슬라이드 사이트](https://heon28.github.io/data-yanolja-2026/)
-- [슬라이드 소스 엔트리](./slides/index.html)
-- [CFP 제출 문안](./docs/cfp/data-yanolja-2026/cfp-submission.md)
-- [슬라이드 구성안](./docs/cfp/data-yanolja-2026/slide-outline.md)
-- [슬라이드 본문 초안](./docs/cfp/data-yanolja-2026/slides-content.md)
-- [슬라이드 화면용 압축 문구](./docs/cfp/data-yanolja-2026/slides-screen-copy.md)
-- [프론트엔드 슬라이드 빌드 브리프](./docs/cfp/data-yanolja-2026/frontend-slides-brief.md)
-- [데모 설계 문서](./docs/cfp/data-yanolja-2026/demo-spec.md)
+베이지안 최적화의 탐색 과정, Gaussian Process를 통한 함수 추정,
+획득함수를 이용한 다음 실험 선택을 CRM 예제로 설명합니다.
 
-## 발표에서 다루는 내용
+## 공개 범위
 
-- 왜 A/B 테스트만으로는 정책 탐색 문제를 충분히 설명하기 어려운가
-- Gaussian Process와 Bayesian Optimization을 실무 문제 중심으로 쉽게 이해하는 방법
-- CRM 정책 최적화 예제로 보는 `할인율 × 발송 시점` 최적화
-- Constraint와 연령/성별별 정책 최적화 확장
-- Ax / BoTorch로 실제 구현을 시작하는 관점
-
-## Public / Private
-
-- `docs/cfp/` 아래 문서는 공개 제출용 문서입니다.
-- `slides/` 아래에는 실제 발표 deck 구현이 있습니다.
-- `gh-pages` 브랜치는 GitHub Pages 배포용 브랜치이며, 루트의 정적 파일을 `https://heon28.github.io/data-yanolja-2026/`로 서비스합니다.
-- 내부 브레인스토밍, 설계 메모, 실행 계획은 `docs/superpowers/`에서 별도로 관리하며 Git 추적 대상에서 제외합니다.
+발표용 공개 프로필과 발표 자료를 공유합니다.
+연락처가 포함된 발표자 OT 자료, 비공개 메모, 로컬 인증 정보는 Git 추적에서 제외합니다.

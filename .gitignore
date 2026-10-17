@@ -1,4 +1,39 @@
+# macOS metadata
+.DS_Store
+
 # Internal brainstorming, specs, and execution plans
 docs/superpowers/
+.superpowers/
+
+# Local notes and poster extraction artifacts
 notes/private/
+notes/poster/
+
+# Speaker-only orientation materials containing contact details
+docs/OT/
+
+# Local credentials and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.p12
+*.pfx
+.ssh/
+id_rsa
+id_ed25519
+
+# Temporary files
 *.tmp
+
+# Generated presentation exports
+presentation_html/*.pdf
+
+# Generated isolated worktrees
+.worktrees/
+worktrees/
+
+# Python local artifacts
+__pycache__/
+*.pyc
