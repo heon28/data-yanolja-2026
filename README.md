@@ -10,6 +10,7 @@
 
 ## 발표 자료
 
+- [브라우저에서 HTML 발표 자료 바로 보기](https://heon28.github.io/data-yanolja-2026/)
 - [HTML 슬라이드](presentation_html/index.html): 파일을 내려받아 브라우저에서 열면 됩니다.
 - [발표 대본](presentation_html/script.md)
 - [슬라이드별 상세 설명](presentation_html/speaker_script.md)
